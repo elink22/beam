@@ -45,7 +45,12 @@ jobs:
     outputs:
       gcp-variables-set: ${{ steps.check_gcp_variables.outputs.gcp-variables-set }}
     steps:
-      - name: Clean GitHub workspace
+      #- name: Clean GitHub workspace
+      #  if: startsWith(matrix.os, 'windows')
+      #  shell: powershell #Todo: remove hardcoded github workspace path
+      #  run: if(Test-Path  -Path 'C:/actions/_work'){ Remove-Item 'C:/actions/_work' -Recurse} 
+      - name: Clean GitHub workspace linux
+        if: startsWith(matrix.os, 'linux')
         run: if [ -d "$GITHUB_WORKSPACE" ]; then sudo rm -rf $GITHUB_WORKSPACE/* ; fi
       - uses: actions/checkout@v2
       - name: "Check are GCP variables set"
@@ -70,7 +75,12 @@ jobs:
       - check_gcp_variables
     runs-on: self-hosted
     steps:
-      - name: Clean GitHub workspace
+      #- name: Clean GitHub workspace
+      #  if: startsWith(matrix.os, 'windows')
+      #  shell: powershell
+      #  run: if(Test-Path -Path 'C:/actions/_work'){ Remove-Item 'C:/actions/_work' -Recurse}
+      - name: Clean GitHub workspace linux
+        if: startsWith(matrix.os, 'linux')
         run: if [ -d "$GITHUB_WORKSPACE" ]; then sudo rm -rf $GITHUB_WORKSPACE/* ; fi
       - name: Checkout code
         uses: actions/checkout@v2
@@ -99,7 +109,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [self-hosted, macos-latest, windows-latest]
+        os: [windows-latest]
         params: [
           {"py_ver": "3.6", "tox_env": "py36"},
           {"py_ver": "3.7", "tox_env": "py37"},
@@ -111,9 +121,14 @@ jobs:
           - os: windows-latest
             params: {"py_ver": "3.8", "tox_env": "py38"}
     steps:
-      - name: Clean GitHub workspace
-        if: startsWith(matrix.os, 'self')
+      #- name: Clean GitHub workspace
+      #  if: startsWith(matrix.os, 'windows')
+      #  shell: powershell
+      #  run: if(Test-Path -Path 'C:/actions/_work' ){ Remove-Item 'C:/actions/_work' -Recurse} 
+      - name: Clean GitHub workspace linux
+        if: startsWith(matrix.os, 'linux')
         run: if [ -d "$GITHUB_WORKSPACE" ]; then sudo rm -rf $GITHUB_WORKSPACE/* ; fi
+        
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Install python
@@ -137,7 +152,7 @@ jobs:
       - name: Run tests basic windows
         if: startsWith(matrix.os, 'windows')
         working-directory: ./sdks/python
-        run: tox -c tox.ini -e ${{ matrix.params.tox_env }}-win
+        run: tox -c toxwin.ini -e ${{ matrix.params.tox_env }}-win
       - name: Upload test logs
         uses: actions/upload-artifact@v2
         if: always()
@@ -151,7 +166,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [self-hosted, macos-latest, windows-latest]
+        os: [windows-latest]
         python: [3.6, 3.7, 3.8]
         exclude:
           # TODO remove exclusion after issue with protobuf is solved
@@ -159,12 +174,13 @@ jobs:
           - os: windows-latest
             python: 3.8
     steps:
-      - name: Clean GitHub workspace
-        if: startsWith(matrix.os, 'self')
+      #- name: Clean GitHub workspace
+      #  if: startsWith(matrix.os, 'windows')
+      #  shell: powershell
+      #  run: if(Test-Path  -Path 'C:/actions/_work'){ Remove-Item 'C:/actions/_work' -Recurse}
+      - name: Clean GitHub workspace linux
+        if: startsWith(matrix.os, 'linux')
         run: if [ -d "$GITHUB_WORKSPACE" ]; then sudo rm -rf $GITHUB_WORKSPACE/* ; fi
-      - name: Clean GitHub workspace Windows
-        if: startsWith(matrix.os, 'windows')
-        run: echo TODO commands to clean workspace in self-hosted-windows
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Install python
@@ -190,7 +206,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [self-hosted, macos-latest, windows-latest]
+        os: [windows-latest]
         python: [3.6, 3.7, 3.8]
         exclude:
           # TODO remove exclusion after issue with protobuf is solved
@@ -198,12 +214,13 @@ jobs:
           - os: windows-latest
             python: 3.8
     steps:
-      - name: Clean GitHub workspace
-        if: startsWith(matrix.os, 'self')
+     # - name: Clean GitHub workspace
+     #   if: startsWith(matrix.os, 'windows')
+     #   shell: powershell
+     #   run: if(Test-Path  -Path 'C:/actions/_work'){ Remove-Item 'C:/actions/_work' -Recurse}
+      - name: Clean GitHub workspace linux
+        if: startsWith(matrix.os, 'linux')
         run: if [ -d "$GITHUB_WORKSPACE" ]; then sudo rm -rf $GITHUB_WORKSPACE/* ; fi
-      - name: Clean GitHub workspace Windows
-        if: startsWith(matrix.os, 'windows')
-        run: echo TODO commands to clean workspace in self-hosted-windows
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Install python

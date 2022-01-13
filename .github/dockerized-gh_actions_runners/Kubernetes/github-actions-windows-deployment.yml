@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: windows-actions-deployment
+  labels:
+    app: windows-actions-runners
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: windows-actions-runners
+  template:
+    metadata:
+      labels:
+        app: windows-actions-runners
+    spec:
+      nodeSelector:
+        kubernetes.io/os: windows
+      containers:
+      - name: windows-actions-server
+        image: _IMAGE
+        env:
+        - name: GITHUB_REPO
+          value: _GITHUB_REPO
+        - name: GITHUB_TOKEN
+          value: _GITHUB_TOKEN
+        ports:
+        - containerPort: 80
