@@ -17,16 +17,15 @@ name: Mark and close stale pull requests
 
 on:
   schedule:
-  - cron: '33 12 * * *'
-
+    - cron: '33 12 * * *'
+  push:
+    branches: [ 'master', 'release-*', 'beam-12812-ub-win-test' ]
 jobs:
   stale:
-
     runs-on: [self-hosted, ubuntu-20.04]
     permissions:
       issues: write
       pull-requests: write
-
     steps:
     - uses: actions/stale@v3
       with:
