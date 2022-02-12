@@ -20,23 +20,21 @@
 name: Java Tests
 
 on:
-  workflow_dispatch:
-    inputs:
-      runDataflow:
-        description: 'Type "true" if you want to run Dataflow tests (GCP variables must be configured, check CI.md)'
-        default: false
   schedule:
     - cron: '10 2 * * *'
   push:
-    branches: ['master', 'release-*']
+    branches: ['master', 'release-*', 'beam-12812-ub-win-test']
     tags: ['v*']
   pull_request:
     branches: ['master', 'release-*']
     tags: ['v*']
     paths: ['sdks/java/**', 'model/**', 'runners/**', 'examples/java/**',
             'examples/kotlin/**', 'release/**', 'buildSrc/**']
-
-
+  workflow_dispatch:
+    inputs:
+      runDataflow:
+        description: 'TEST workflow_dispatch'
+        default: false
 jobs:
   check_gcp_variables:
     timeout-minutes: 5
