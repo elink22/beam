@@ -23,7 +23,7 @@ on:
   schedule:
     - cron: '10 2 * * *'
   push:
-    branches: ['master', 'release-*', 'beam-12812-ub-win-test']
+    branches: ['master', 'release-*'] #'beam-12812-ub-win-test']
     tags: 'v*'
   pull_request:
     branches: ['master', 'release-*']
@@ -34,6 +34,7 @@ on:
 jobs:
   build:
     runs-on: [self-hosted, ubuntu-20.04]
+    name: Go Build
     steps:
       - name: Clean GitHub workspace
         run: if [ -d "$GITHUB_WORKSPACE" ]; then sudo rm -rf $GITHUB_WORKSPACE/* ; fi
