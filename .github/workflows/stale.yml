@@ -19,7 +19,7 @@ on:
   schedule:
     - cron: '33 12 * * *'
   push:
-    branches: [ 'master', 'release-*'] #'beam-12812-ub-win-test' ]
+    branches: [ 'master', 'release-*', 'beam-12812-ub-win-test' ]
 jobs:
   stale:
     runs-on: [self-hosted, ubuntu-20.04]
