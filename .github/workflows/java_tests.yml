@@ -33,7 +33,7 @@ on:
   workflow_dispatch:
     inputs:
       runDataflow:
-        description: 'TEST workflow_dispatch'
+        description: 'Test workflow_dispatch'
         default: false
 jobs:
   check_gcp_variables:
