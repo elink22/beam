@@ -18,8 +18,6 @@
 name: Cancel
 
 on:
-  push:
-    branches: [ 'beam-12812-ub-win-test']
   workflow_run:
     workflows:
       - "Build python source distribution and wheels"
