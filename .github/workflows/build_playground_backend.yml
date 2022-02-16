@@ -18,7 +18,7 @@ name: Build And Deploy Playground Backend Application
 on:
   push:
     tags: ['v*']
-    branches: ['beam-12812-ub-win-test']
+    # branches: ['beam-12812-ub-win-test']
   pull_request:
     paths: ['playground/backend/**']
   workflow_dispatch:
@@ -60,13 +60,10 @@ jobs:
       - name: lint dockerfile
         run: dockerlint Dockerfile
         working-directory: playground/backend/containers/java
-      - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
         with:
             terraform_version: ${{ env.TERRAFORM_VERSION }}
-        # if: startsWith(github.ref, 'refs/tags/')
-      - name: Check tf and docker variables
-        run: terraform --version && docker --version
+        if: startsWith(github.ref, 'refs/tags/')
       - name: Set Docker Tag
         run: echo "DOCKERTAG=${GITHUB_SHA}" >> $GITHUB_ENV
       - name: Set Docker Tag If Github Tag was trigger
