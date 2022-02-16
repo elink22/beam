@@ -21,7 +21,6 @@ on:
     # branches: ['beam-12812-ub-win-test']
   pull_request:
     paths: ['playground/backend/**']
-  workflow_dispatch:
 jobs:
   build_playground_backend_docker_image:
     name: Build Playground Backend App
@@ -60,7 +59,7 @@ jobs:
       - name: lint dockerfile
         run: dockerlint Dockerfile
         working-directory: playground/backend/containers/java
-        uses: hashicorp/setup-terraform@v1
+      - uses: hashicorp/setup-terraform@v1
         with:
             terraform_version: ${{ env.TERRAFORM_VERSION }}
         if: startsWith(github.ref, 'refs/tags/')
@@ -83,7 +82,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
       - name: Prepare Build Python
         run: ./gradlew playground:backend:containers:python:dockerTagPush -Pdocker-repository-root='${{ secrets.PLAYGROUND_REGISTRY_NAME}}/${{ secrets.PLAYGROUND_PROJECT_ID }}/playground-repository'  -Pdocker-tag=${{ env.DOCKERTAG }}
-        # if: startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/')
       - name: Prepare Build Go
         run: ./gradlew playground:backend:containers:go:dockerTagPush -Pdocker-repository-root='${{ secrets.PLAYGROUND_REGISTRY_NAME}}/${{ secrets.PLAYGROUND_PROJECT_ID }}/playground-repository' -Pdocker-tag=${{ env.DOCKERTAG }}
         if: startsWith(github.ref, 'refs/tags/')

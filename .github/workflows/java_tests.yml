@@ -19,6 +19,11 @@
 
 name: Java Tests
 on:
+  workflow_dispatch:
+    inputs:
+      runDataflow:
+        description: 'Type "true" if you want to run Dataflow tests (GCP variables must be configured, check CI.md)'
+        default: false
   schedule:
     - cron: '10 2 * * *'
   push:
@@ -29,11 +34,6 @@ on:
     tags: ['v*']
     paths: ['sdks/java/**', 'model/**', 'runners/**', 'examples/java/**',
             'examples/kotlin/**', 'release/**', 'buildSrc/**']
-  workflow_dispatch:
-    inputs:
-      runDataflow:
-        description: 'Test workflow_dispatch'
-        default: false
 jobs:
   check_gcp_variables:
     timeout-minutes: 5
