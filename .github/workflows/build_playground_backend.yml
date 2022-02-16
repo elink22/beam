@@ -60,10 +60,12 @@ jobs:
       - name: lint dockerfile
         run: dockerlint Dockerfile
         working-directory: playground/backend/containers/java
-      - uses: hashicorp/setup-terraform@v1
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v1
         with:
             terraform_version: ${{ env.TERRAFORM_VERSION }}
-        if: startsWith(github.ref, 'refs/tags/')
+        run: terraform --version && docker --version
+        # if: startsWith(github.ref, 'refs/tags/')
       - name: Set Docker Tag
         run: echo "DOCKERTAG=${GITHUB_SHA}" >> $GITHUB_ENV
       - name: Set Docker Tag If Github Tag was trigger
@@ -83,7 +85,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
       - name: Prepare Build Python
         run: ./gradlew playground:backend:containers:python:dockerTagPush -Pdocker-repository-root='${{ secrets.PLAYGROUND_REGISTRY_NAME}}/${{ secrets.PLAYGROUND_PROJECT_ID }}/playground-repository'  -Pdocker-tag=${{ env.DOCKERTAG }}
-        if: startsWith(github.ref, 'refs/tags/')
+        # if: startsWith(github.ref, 'refs/tags/')
       - name: Prepare Build Go
         run: ./gradlew playground:backend:containers:go:dockerTagPush -Pdocker-repository-root='${{ secrets.PLAYGROUND_REGISTRY_NAME}}/${{ secrets.PLAYGROUND_PROJECT_ID }}/playground-repository' -Pdocker-tag=${{ env.DOCKERTAG }}
         if: startsWith(github.ref, 'refs/tags/')
