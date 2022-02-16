@@ -18,7 +18,6 @@
 # To learn more about GitHub Actions in Apache Beam check the CI.md
 
 name: Java Tests
-
 on:
   schedule:
     - cron: '10 2 * * *'
