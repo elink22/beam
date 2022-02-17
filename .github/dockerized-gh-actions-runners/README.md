@@ -22,20 +22,21 @@ In addition, we are working on researching the best way to implement the MacOS s
 
 ## Ubuntu
 Ubuntu Self-hosted runners are implemented using Google Kubernetes Engine with the following specifications:
-####Node
+
+#### Node
 * Machine Type: 2-custom-6-18432
 * Disk Size: 100 GB
 * CPU: 6 vCPUs
 * Memory : 18 GB
 
-####Pod
+#### Pod
 * Image: $LOCAL_IMAGE_NAME LOCATION-docker.pkg.dev/PROJECT-ID/REPOSITORY/IMAGE:latest
 * CPU: 2
 * Memory: 1028 Mi
 * Volumes: docker.sock
 * Secret env variables: Kubernetes Secrets
 
-####AutoScaling
+#### AutoScaling
 * Horizontal Pod Autoscaling
   * 4-8 nodes
   * HorizontalPodAutoscaler
@@ -47,8 +48,8 @@ Ubuntu Self-hosted runners are implemented using Google Kubernetes Engine with t
 ## Windows
 
 
-##Self-Hosted Runners Architecture
+## Self-Hosted Runners Architecture
 ![Diagram](diagrams/self-hosted-runners-architecture-beam-12812.png)
 
-##Cronjob - Delete Unused Self-hosted Runners
+## Cronjob - Delete Unused Self-hosted Runners
 ![Delete Offline Self-hosted Runners](diagrams/self-hosted-runners-delete-function-beam-12812.png)
