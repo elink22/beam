@@ -45,3 +45,10 @@ Ubuntu Self-hosted runners are implemented using Google Kubernetes Engine with t
 * Vertical Pod Autoscaling: updateMode: "Auto"
 
 ## Windows
+
+
+##Self-Hosted Runners Architecture
+![Diagram](diagrams/self-hosted-runners-architecture-beam-12812.png)
+
+##Cronjob - Delete Unused Self-hosted Runners
+![Delete Offline Self-hosted Runners](diagrams/self-hosted-runners-delete-function-beam-12812.png)
