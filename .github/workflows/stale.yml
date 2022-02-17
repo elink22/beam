@@ -17,7 +17,7 @@ name: Mark and close stale pull requests
 
 on:
   schedule:
-    - cron: '33 12 * * *'
+  - cron: '33 12 * * *'
 
 jobs:
   stale:
