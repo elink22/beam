@@ -27,13 +27,15 @@ on:
   schedule:
     - cron: '10 2 * * *'
   push:
-    branches: ['master', 'release-*'] #'beam-12812-ub-win-test']
+    branches: ['master', 'release-*']
     tags: ['v*']
   pull_request:
     branches: ['master', 'release-*']
     tags: ['v*']
     paths: ['sdks/java/**', 'model/**', 'runners/**', 'examples/java/**',
             'examples/kotlin/**', 'release/**', 'buildSrc/**']
+
+
 jobs:
   check_gcp_variables:
     timeout-minutes: 5

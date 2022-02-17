@@ -49,7 +49,8 @@ Ubuntu Self-hosted runners are implemented using Google Kubernetes Engine with t
 
 
 ## Self-Hosted Runners Architecture
-![Diagram](diagrams/self-hosted-runners-architecture-beam-12812.png)
+![Diagram](diagrams/self-hosted-runners-architecture.png)
 
 ## Cronjob - Delete Unused Self-hosted Runners
-![Delete Offline Self-hosted Runners](diagrams/self-hosted-runners-delete-function-beam-12812.png)
+
+![Delete Offline Self-hosted Runners](diagrams/self-hosted-runners-delete-function.png)

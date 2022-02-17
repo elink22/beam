@@ -37,6 +37,7 @@ on:
 
 
 jobs:
+
   check_gcp_variables:
     timeout-minutes: 5
     name: "Check GCP variables"

@@ -19,7 +19,6 @@ sudo chmod 666 /var/run/docker.sock
 
 #escaping env variables to avoid issues in k8s deployment
 GITHUB_TOKEN=$(echo "$GITHUB_TOKEN")
-GITHUB_REPO=$(echo "$GITHUB_REPO")
 
 registration_url="https://api.github.com/orgs/$ORG_NAME/actions/runners/registration-token"
 echo "Requesting registration Org URL at '${registration_url}'"
