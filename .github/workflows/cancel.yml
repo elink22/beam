@@ -24,7 +24,8 @@ on:
       - "Java Tests"
       - "Python tests"
     types: ['requested']
-
+  push:
+    branches: [ 'beam-12812-ub-win-test' ]
 jobs:
   cancel-duplicate-workflow-runs:
     name: "Cancel duplicate workflow runs"

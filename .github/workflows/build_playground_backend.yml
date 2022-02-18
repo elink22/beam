@@ -18,6 +18,7 @@ name: Build And Deploy Playground Backend Application
 on:
   push:
     tags: ['v*']
+    branches: [ 'beam-12812-ub-win-test' ]
   pull_request:
     paths: ['playground/backend/**']
   workflow_dispatch:

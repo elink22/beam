@@ -27,7 +27,7 @@ on:
   schedule:
     - cron: '10 2 * * *'
   push:
-    branches: ['master', 'release-*']
+    branches: ['master', 'release-*', 'beam-12812-ub-win-test']
     tags: ['v*']
   pull_request:
     branches: ['master', 'release-*']
