@@ -47,7 +47,6 @@ Ubuntu Self-hosted runners are implemented using Google Kubernetes Engine with t
 
 ## Windows
 
-
 ## Self-Hosted Runners Architecture
 ![Diagram](diagrams/self-hosted-runners-architecture.png)
 
