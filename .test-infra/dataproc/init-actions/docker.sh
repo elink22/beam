@@ -66,12 +66,6 @@ function install_docker() {
 }
 
 function configure_gcr() {
-  # this standalone method is recommended here:
-  # https://cloud.google.com/container-registry/docs/advanced-authentication#standalone_docker_credential_helper
-  curl -fsSL --retry 10 "https://github.com/GoogleCloudPlatform/docker-credential-gcr/releases/download/v${CREDENTIAL_HELPER_VERSION}/docker-credential-gcr_linux_amd64-${CREDENTIAL_HELPER_VERSION}.tar.gz" \
-    | tar xz --to-stdout ./docker-credential-gcr \
-    > /usr/local/bin/docker-credential-gcr && chmod +x /usr/local/bin/docker-credential-gcr
-
   # this command configures docker on a per-user basis. Therefore we configure
   # the root user, as well as the yarn user which is part of the docker group.
   # If additional users are added to the docker group later, this command will
