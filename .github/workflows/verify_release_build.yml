@@ -9,24 +9,12 @@ on:
       COMMENT_TRIGGER_PHRASES:
         description: Flag to comment the Jenkins Trigger Phrases in the new PR
         required: true
-        default: false
+        default: 'false'
 env:
-  #WORKING_BRANCH: postcommit_validation_pr # Is it always the same branch name? or should we need to add it as input?
-  WORKING_BRANCH: 'verify-release-pr-test'
+  WORKING_BRANCH: postcommit_validation_pr # Is it always the same branch name? or should we need to add it as input?
 jobs:
-  check_environment:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check environment
-        run: |
-          echo "Verify hub installation."
-          git version
-          hub version
-  # Run Gradle release build and all PostCommit Tests against Release Branch on Jenkins.
-  # This create_release_pr task will create a PR against apache/beam.
-  update_create_release_pr:
-    needs: check_environment
-    runs-on: ubuntu-latest
+  verify_release:
+    runs-on: [self-hosted, ubuntu-20.04]
     permissions:
       pull-requests: write
       contents: write
@@ -41,40 +29,32 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: ${{ env.RELEASE_BRANCH }}
+      - name: Install gh cli
+        uses: ./.github/actions/setup-gh-cli-linux
       - name: Set git config
         run: |
           git config user.name $GITHUB_ACTOR
-      - name: Set Dataflow Python Batch Tests Release Version
+          git config user.email actions@"$RUNNER_NAME".local
+      - name: Set Release Version
         run: |
           git checkout -b ${{env.WORKING_BRANCH}} --quiet
           /bin/bash release/src/main/scripts/set_version.sh "$RELEASE_VER" --git-add
           # In case the version string was not changed, append a newline to CHANGES.md
           echo "" >> CHANGES.md
+      - name: Push Changes in ${{ env.WORKING_BRANCH }} Branch
+        run: |
           git add CHANGES.md
           git commit -m "Changed version.py and gradle.properties to python dev version to create a test PR" --quiet
           git push origin $WORKING_BRANCH --quiet
       - name: Create new Release PR
-        id: create_pr
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          GITHUB_PR_URL=$(hub pull-request -b $GITHUB_ACTOR:${{env.RELEASE_BRANCH}} -h $GITHUB_ACTOR:${{env.WORKING_BRANCH}} -l ${{env.RELEASE_BRANCH}}  -F - <<<"[DO NOT MERGE] Run all PostCommit and PreCommit Tests against Release Branch.
-          You can run many tests automatically using release/src/main/scripts/mass_comment.py.")
-          echo "::set-output name=git_pr::${GITHUB_PR_URL}"
-    outputs:
-      git_pr: ${{ steps.create_pr.outputs.git_pr }}
-  comment_trigger_phrases:
-      if: ${{ github.event.inputs.COMMENT_TRIGGER_PHRASES }}
-      needs: update_create_release_pr
-      runs-on: ubuntu-latest
-      permissions:
-        pull-requests: write
-      steps:
-        - name: Create PR Comment
-          run: |
-            GITHUB_PR=${{ needs.update_create_release_pr.outputs.git_pr }}
-            sh ./comment_pr_trigger_phrases.sh $GITHUB_PR
-          env:
-            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          working-directory: scripts/ci/release
-
+          GITHUB_PR_URL=$(gh pr create -B ${{env.RELEASE_BRANCH}} -H ${{env.WORKING_BRANCH}} -t "[DO NOT MERGE] Run all PostCommit and PreCommit Tests against Release Branch" -b "You are going to run many tests automatically in this PR (refer to scripts/ci/release/jenkins_trigger_phrases.txt), however, there are some PostCommits jobs that have been migrated to GitHub Actions workflows and for the moment they don't have Trigger Phrases. Please run the rest of PostCommit tests manually.")
+      - name: Comment Jenkins Trigger Phrases in PR
+        if: ${{ github.event.inputs.COMMENT_TRIGGER_PHRASES == 'true' }}
+        run: |
+          sh ./comment_pr_trigger_phrases.sh $GITHUB_PR_URL
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: 'scripts/ci/release'
