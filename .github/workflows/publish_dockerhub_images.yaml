@@ -1,4 +1,4 @@
-name: Build And Publish to DockerHub
+name: Build And Publish Dockerhub images
 on:
   workflow_dispatch:
 jobs:
