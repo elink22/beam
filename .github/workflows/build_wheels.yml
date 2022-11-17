@@ -25,14 +25,13 @@ on:
   push:
     branches: ['master', 'release-*']
     tags: ['v*']
-  pull_request_target:
+  pull_request:
     branches: ['master', 'release-*']
     tags: ['v*']
     paths: ['sdks/python/**', 'model/**', 'release/**']
   workflow_dispatch:
 env:
   GCP_PATH: "gs://${{ secrets.GCP_PYTHON_WHEELS_BUCKET }}/${GITHUB_REF##*/}/${GITHUB_SHA}-${GITHUB_RUN_ID}/"
-permissions: read-all
 jobs:
 
   check_gcp_variables:

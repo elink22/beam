@@ -23,11 +23,10 @@ on:
   push:
     branches: ['master', 'release-*']
     tags: ['v*']
-  pull_request_target:
+  pull_request:
     branches: ['master', 'release-*']
     tags: ['v*']
     paths: ['dev-support/**', 'buildSrc/**', '**/build.gradle', 'sdks/python/setup.py', 'sdks/python/tox.ini']
-permissions: read-all
 jobs:
   run_local_env_install_ubuntu:
     timeout-minutes: 25

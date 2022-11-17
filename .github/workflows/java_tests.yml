@@ -30,12 +30,11 @@ on:
   push:
     branches: ['master', 'release-*']
     tags: ['v*']
-  pull_request_target:
+  pull_request:
     branches: ['master', 'release-*']
     tags: ['v*']
     paths: ['sdks/java/**', 'model/**', 'runners/**', 'examples/java/**',
             'examples/kotlin/**', 'release/**', 'buildSrc/**']
-permissions: read-all
 jobs:
   check_gcp_variables:
     timeout-minutes: 5
