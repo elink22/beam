@@ -35,8 +35,6 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
       - name: Install go
         uses: actions/setup-go@v3
         with:
@@ -66,8 +64,6 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
       - name: Install go
         uses: actions/setup-go@v3
         with:

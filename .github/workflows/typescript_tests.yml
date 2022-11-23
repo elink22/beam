@@ -44,7 +44,6 @@ jobs:
         with:
           persist-credentials: false
           submodules: recursive
-          ref: ${{ github.event.pull_request.head.sha }}
       - name: Install node
         uses: actions/setup-node@v3
         with:
