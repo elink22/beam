@@ -28,7 +28,7 @@ jobs:
           PROJECT_ID: ${{secrets.PROJECT_ID}}
           REPO: ${{secrets.ARTIFACT_REPOSITORY}}
         run: |
-          tee -a build.gradle << END
+          cat > build.gradle << EOF
           // Remote artifact configuration
           plugins {
             id "maven-publish"
@@ -83,7 +83,7 @@ jobs:
           }
 
 
-          END
+          EOF
       - name: Checking build.gradle
         run: echo $(cat build.gradle)
       - name: Publishing artifact
