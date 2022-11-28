@@ -1,0 +1,87 @@
+name: Upload to Google Artifact Example
+
+on:
+  workflow_dispatch:
+
+jobs:
+  upload_artifact:
+    runs-on: [self-hosted, ubuntu-20.04]
+    steps:
+      - name: Download Generic Artifact
+        uses: actions/checkout@v3
+        with:
+          repository: jitpack/gradle-simple
+          ref: master
+      - name: Configuring upload_artifact
+        env:
+          REPO: ${{secrets.ARTIFACT_REPOSITORY}}
+        run: |
+          gcloud config set artifacts/repository $REPO
+          gcloud config set artifacts/location us-central1
+      - name: Configuring build.gradle
+        env:
+          PROJECT_ID: ${{secrets.PROJECT_ID}}
+          REPO: ${{secrets.ARTIFACT_REPOSITORY}}
+        run: |
+          tee -a build.gradle << END
+          // Remote artifact configuration
+          plugins {
+            id "maven-publish"
+            id "com.google.cloud.artifactregistry.gradle-plugin" version "2.1.5"
+          }
+
+          apply plugin: 'java'
+          apply plugin: 'maven-publish'
+
+          group = 'com.github.jitpack'
+          version = '2.0'
+
+          sourceCompatibility = 1.8 // java 8
+          targetCompatibility = 1.8
+
+          repositories {
+            mavenCentral()
+            maven{
+                  url "artifactregistry://us-central1-maven.pkg.dev/$PROJECT_ID/$REPO"
+            }
+          }
+
+          dependencies {
+            implementation 'com.google.guava:guava:29.0-jre'
+          }
+
+          java {
+            withSourcesJar()
+            withJavadocJar()
+          }
+
+
+          wrapper {
+              gradleVersion = "7.3.3"
+              distributionType = Wrapper.DistributionType.ALL
+          }
+
+
+
+          publishing {
+            publications {
+                mavenJava(MavenPublication) {
+                    groupId  'maven.example.id'
+                    from components.java
+                }
+            }
+            repositories {
+              maven {
+                url "artifactregistry://us-central1-maven.pkg.dev/$PROJECT_ID/$REPO"
+              }
+            }
+          }
+
+
+          END
+      - name: Publishing artifact
+        run: ./gradlew publish
+      - name: Checking contents
+        env: 
+          REPO: ${{secrets.ARTIFACT_REPOSITORY}}
+        run: gcloud artifacts packages list --repository=$REPO
