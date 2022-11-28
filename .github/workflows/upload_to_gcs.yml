@@ -1,0 +1,31 @@
+name: Upload to GCS Example
+
+on:
+  workflow_dispatch:
+
+
+jobs:
+  upload_object:
+    runs-on: [self-hosted,ubuntu-20.04]
+
+    steps:
+      - name: Install java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin' # See 'Supported distributions' for available options
+          java-version: '11'
+      - name: Download Generic Artifact
+        uses: actions/checkout@v3
+        with:
+          repository: jitpack/gradle-simple
+          ref: master
+      
+      - name: Build project
+        run: ./gradlew build
+      
+      - name: Copy JAR to bucket
+        run: gcloud alpha storage cp ./build/libs gs://$BUCKET_NAME
+      
+      - name: Checking bucket contents
+        run: gcloud alpha storage ls --recursive gs://$BUCKET_NAME/**
+      
