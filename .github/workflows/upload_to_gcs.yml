@@ -24,7 +24,7 @@ jobs:
         run: ./gradlew build
       
       - name: Copy JAR to bucket
-        run: gcloud alpha storage cp ./build/libs gs://$BUCKET_NAME
+        run: gcloud alpha storage cp --recursive ./build/libs/ gs://$BUCKET_NAME
       
       - name: Checking bucket contents
         run: gcloud alpha storage ls --recursive gs://$BUCKET_NAME/**
