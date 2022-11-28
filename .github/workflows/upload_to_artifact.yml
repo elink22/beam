@@ -84,6 +84,8 @@ jobs:
 
 
           END
+      - name: Checking build.gradle
+        run: echo $(cat build.gradle)
       - name: Publishing artifact
         run: ./gradlew publish
       - name: Checking contents
