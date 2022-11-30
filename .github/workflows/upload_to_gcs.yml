@@ -36,7 +36,7 @@ jobs:
           ref: master
       
       - name: Build project
-        run: ./gradlew publish
+        run: ./gradlew build -x createDockerContainer startDockerContainer initGitSubmodules installDependencies buildCodeSamples setupDockerContainer stopAndRemoveDockerContainer cleanWebsite serveWebsite testWebsite
       
       - name: Copy JAR to bucket
         env:
