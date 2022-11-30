@@ -14,6 +14,13 @@ jobs:
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
           java-version: '11'
+      - name: Run Gradle Command
+        shell: bash
+        run: |
+          # Removing settings.xml is a workaround to avoid a decryption issue
+          # of Beam's gradle-command-action plugin and github's provided
+          # maven settings.xml file
+          rm ~/.m2/settings.xml
       - name: Download Generic Artifact
         uses: actions/checkout@v3
         with:
