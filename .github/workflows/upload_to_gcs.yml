@@ -36,7 +36,7 @@ jobs:
           ref: master
       
       - name: Build project
-        run: ./gradlew build -x website
+        run: ./gradlew publish
       
       - name: Copy JAR to bucket
         env:
