@@ -17,7 +17,7 @@ jobs:
       - name: Download Generic Artifact
         uses: actions/checkout@v3
         with:
-          repository: jitpack/gradle-simple
+          repository: apache/beam
           ref: master
       
       - name: Build project
