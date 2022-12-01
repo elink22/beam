@@ -36,7 +36,7 @@ jobs:
           ref: master
       
       - name: Build project
-        run: ./gradlew build -x ':website:createDockerContainer' -x ':website:startDockerContainer' -x ':website:initGitSubmodules' -x ':website:installDependencies' -x ':website:buildCodeSamples' -x ':website:setupDockerContainer' -x ':website:stopAndRemoveDockerContainer' -x ':website:cleanWebsite' -x ':website:serveWebsite' -x ':website:testWebsite'
+        run: ./gradlew build -x ':website:createDockerContainer' -x ':website:startDockerContainer' -x ':website:buildLocalWebsite' -x ':website:initGitSubmodules' -x ':website:installDependencies' -x ':website:buildCodeSamples' -x ':website:setupDockerContainer' -x ':website:stopAndRemoveDockerContainer' -x ':website:cleanWebsite' -x ':website:serveWebsite' -x ':website:testWebsite'
       
       - name: Copy JAR to bucket
         env:
