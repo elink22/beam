@@ -13,7 +13,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
-          java-version: '11'
+          java-version: '8'
       - name: Install Go
         uses: actions/setup-go@v3
         with:
