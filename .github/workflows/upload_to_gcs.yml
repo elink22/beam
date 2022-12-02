@@ -9,19 +9,25 @@ jobs:
     runs-on: [self-hosted,ubuntu-20.04]
 
     steps:
-      - name: Install java
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin' # See 'Supported distributions' for available options
-          java-version: '8'
-      - name: Install Go
+      - name: Setup Go 
         uses: actions/setup-go@v3
         with:
-          go-version: '>=1.17.0'
-      - name: Install Python
-        uses: actions/setup-python@v3
+          go-version: '1.19'
+          check-latest: true 
+      - name: Setup python 
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.8'
+          python-version: '3.10'
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with: 
+          distribution: 'temurin'
+          java-version: |
+            8
+            11
+      - name: Exporting Java_HOME to Java 8
+        run: echo "JAVA_HOME=${JAVA_HOME_8_X64}" >> $GITHUB_ENV
       - name: Run Gradle Command
         shell: bash
         run: |
