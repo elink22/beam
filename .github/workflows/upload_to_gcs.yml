@@ -28,7 +28,7 @@ jobs:
             11
       - name: Exporting Java_HOME to Java 8
         run: echo "JAVA_HOME=${JAVA_HOME_8_X64}" >> $GITHUB_ENV
-      - name: Run Gradle Command
+      - name: Deleting settings.xml
         shell: bash
         run: |
           # Removing settings.xml is a workaround to avoid a decryption issue
